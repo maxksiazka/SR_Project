@@ -29,6 +29,28 @@
 #include "hardware/gpio.h"
 #include "pico/cyw43_arch.h"
 #include "pico/stdlib.h"
+#include <lwip/tcp.h>
+
+typedef struct TCP_CLIENT_T_{
+    struct tcp_pcb* tcp_pcb;
+    ip_addr_t remote_addr;
+    uint8_t buffer[TCP_BUF_SIZE];
+    int buffer_len;
+    bool connected;
+} TCP_CLIENT_T_;
+
+bool init_wifi_connection(const char *ssid, const char* password);
+
+TCP_CLIENT_T_ *tcp_client_init(void);
+
+bool tcp_client_open_connection(TCP_CLIENT_T_ *client);
+
+//templates from lwip's website
+//can be made static, we won't be calling them directly
+static err_t tcp_receive_callback(void *arg, struct tcp_pcb* client, struct pbuf *p, err_t err);
+static err_t tcp_sent_callback(void *arg, struct tcp_pcb* client, u_int16_t length);
+static err_t tcp_error_callback(void *arg, err_t err);
+static err_t tcp_connected_callback(void *arg, struct tcp_pcb* client,err_t err);
 
 
 #endif // TCP_H
