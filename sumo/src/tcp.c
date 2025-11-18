@@ -15,3 +15,13 @@ bool init_wifi_connection(const char *ssid, const char *password) {
     }
     return true;
 }
+
+TCP_CLIENT_T_ *tcp_client_init(void) {
+    TCP_CLIENT_T_ *client = calloc(1, sizeof(TCP_CLIENT_T_));
+    if (client == NULL) {
+        printf("Failed memory allocation: tcp_client_init\n");
+        exit(-1); // don't try to recover
+    }
+    ip4addr_aton(TCP_SERVER_IP, &client->remote_addr);
+    return client;
+}
