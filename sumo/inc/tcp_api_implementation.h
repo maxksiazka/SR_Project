@@ -46,11 +46,10 @@ TCP_CLIENT_T_ *tcp_client_init(void);
 bool tcp_client_open_connection(TCP_CLIENT_T_ *client);
 
 //templates from lwip's website
-//can be made static, we won't be calling them directly
-static err_t tcp_receive_callback(void *arg, struct tcp_pcb* client_pcb, struct pbuf *p, err_t err);
-static err_t tcp_sent_callback(void *arg, struct tcp_pcb* client_pcb, u_int16_t length);
-static void tcp_error_callback(void *arg, err_t err);
-static err_t tcp_connected_callback(void *arg, struct tcp_pcb* client_pcb,err_t err);
+err_t tcp_receive_callback(void *arg, struct tcp_pcb* client_pcb, struct pbuf *p, err_t err);
+err_t tcp_sent_callback(void *arg, struct tcp_pcb* client_pcb, u_int16_t length);
+void tcp_error_callback(void *arg, err_t err);
+err_t tcp_connected_callback(void *arg, struct tcp_pcb* client_pcb,err_t err);
 
 
 #endif // TCP_API_IMPLEMENTATION_H

@@ -26,7 +26,8 @@ project(sumo C CXX ASM)
 pico_sdk_init()
 
 add_executable(sumo src/main.c
-src/tcp.c
+src/tcp_api_implementation.c
+src/tcp_handling.c
 )
 
 target_include_directories(sumo PUBLIC inc)
