@@ -1,8 +1,8 @@
 #include "tcp_api_implementation.h"
-
+#include "tcp_handling.h"
 // TODO: change type to account for different fails
 bool init_wifi_connection(const char* ssid, const char* password) {
-    if (cyw43_arch_init_with_country(CYW43_COUNTRY_POLAND)) {
+    if (cyw43_arch_init()) {
         printf(
             "Failed to initialize Wi-Fi controller: init_wifi_connection()\n");
         return false;
@@ -18,36 +18,41 @@ bool init_wifi_connection(const char* ssid, const char* password) {
     return true;
 }
 
-TCP_CLIENT_T_* tcp_client_init(void) {
-    TCP_CLIENT_T_* client = calloc(1, sizeof(TCP_CLIENT_T_));
+TCP_CLIENT_T* tcp_client_init(void) {
+    TCP_CLIENT_T* client = calloc(1, sizeof(TCP_CLIENT_T));
     if (client == NULL) {
         printf("Failed memory allocation: tcp_client_init\n");
         exit(-1); // don't try to recover
     }
-    ip4addr_aton(TCP_SERVER_IP, &client->remote_addr);
+    int32_t err = ip4addr_aton(TCP_SERVER_IP, &client->remote_addr);
+    if (err == 0) {
+        printf("Invalid IP address format: tcp_client_init()\n");
+        free(client);
+        return NULL;
+    }
     return client;
 }
 
 err_t tcp_connected_callback(void* arg, struct tcp_pcb* client_pcb, err_t err) {
-    TCP_CLIENT_T_* client = (TCP_CLIENT_T_*)arg;
+    TCP_CLIENT_T* client = (TCP_CLIENT_T*)arg;
 #warning "implement connected handling"
     return ERR_OK;
 }
 err_t tcp_receive_callback(void* arg, struct tcp_pcb* client_pcb,
                            struct pbuf* p, err_t err) {
-    TCP_CLIENT_T_* client = (TCP_CLIENT_T_*)arg;
+    printf("In tcp_receive_callback\n");
+    TCP_CLIENT_T* client = (TCP_CLIENT_T*)arg;
     if (client == NULL) {
         return ERR_VAL;
     }
     if (p == NULL) {
         // connection closed
-        tcp_close(client_pcb);
-        client->connected = false;
+        tcp_client_close(client);
         return ERR_OK;
     }
     if (p->tot_len > 0) {
         printf("recv %d bytes\n", p->tot_len);
-        const u_int16_t buffer_remaining = TCP_BUF_SIZE - client->buffer_len;
+        const uint16_t buffer_remaining = TCP_BUF_SIZE - client->buffer_len;
         client->buffer_len += pbuf_copy_partial(
             p, client->buffer + client->buffer_len, // addition , so we don't
                                                     // write over the data
@@ -57,24 +62,23 @@ err_t tcp_receive_callback(void* arg, struct tcp_pcb* client_pcb,
         tcp_recved(client_pcb, p->tot_len);
     }
     pbuf_free(p);
-    if (client->buffer_len == TCP_BUF_SIZE) {
-        // buffer full, process data
-    }
+    tcp_handle_message(arg, client_pcb, err);
+    client->buffer_len = 0;
     return ERR_OK;
 }
 err_t tcp_sent_callback(void* arg, struct tcp_pcb* client_pcb,
                         u_int16_t length) {
-    TCP_CLIENT_T_* client = (TCP_CLIENT_T_*)arg;
+    TCP_CLIENT_T* client = (TCP_CLIENT_T*)arg;
 #warning "implement sent handling"
     return ERR_OK;
 }
 void tcp_error_callback(void* arg, err_t err) {
-    TCP_CLIENT_T_* client = (TCP_CLIENT_T_*)arg;
+    TCP_CLIENT_T* client = (TCP_CLIENT_T*)arg;
 #warning "implement error handling"
     return;
 }
 
-bool tcp_client_open_connection(TCP_CLIENT_T_* client) {
+bool tcp_client_open_connection(TCP_CLIENT_T* client) {
     printf("Connecting to %s, on port %d\n", TCP_SERVER_IP, TCP_SERVER_PORT);
     client->tcp_pcb = tcp_new_ip_type(IP_GET_TYPE(&client->remote_addr));
     if (client->tcp_pcb == NULL) {
@@ -89,6 +93,32 @@ bool tcp_client_open_connection(TCP_CLIENT_T_* client) {
 
     err_t err = tcp_connect(client->tcp_pcb, &client->remote_addr,
                             TCP_SERVER_PORT, tcp_connected_callback);
+    if (err != ERR_OK) {
+        printf("tcp_connect failed with error: %d\n", err);
+        tcp_client_close(client);
+        return false;
+    }
 
     return true;
+}
+
+err_t tcp_client_close(void* arg) {
+    TCP_CLIENT_T* client = (TCP_CLIENT_T*)arg;
+    err_t err = ERR_OK;
+
+    if (client->tcp_pcb != NULL) {
+        tcp_arg(client->tcp_pcb, NULL);
+        tcp_sent(client->tcp_pcb, NULL);
+        tcp_recv(client->tcp_pcb, NULL);
+        tcp_err(client->tcp_pcb, NULL);
+        err = tcp_close(client->tcp_pcb);
+        if (err != ERR_OK) {
+            printf("tcp_client_close: tcp_close failed with error: %d\n", err);
+            tcp_abort(client->tcp_pcb);
+            err = ERR_ABRT;
+        }
+        client->tcp_pcb = NULL;
+    }
+    free(client);
+    return err;
 }

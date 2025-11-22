@@ -1,0 +1,44 @@
+#ifndef TCP_TYPEDEFS_H
+#define TCP_TYPEDEFS_H
+
+#ifndef LED_PIN
+#define LED_PIN CYW43_WL_GPIO_LED_PIN
+#endif
+
+// conditional definitions, since might be added in CMakeLists.txt
+#ifndef WIFI_SSID
+#define WIFI_SSID "Ogienzrury"
+#endif
+
+#ifndef WIFI_PASSWORD
+#define WIFI_PASSWORD "RobotenMachen"
+#endif
+
+#ifndef TCP_SERVER_IP
+#define TCP_SERVER_IP "10.211.187.204"
+#endif
+
+#ifndef TCP_SERVER_PORT
+#define TCP_SERVER_PORT 5001
+#endif
+
+#ifndef TCP_BUF_SIZE
+#define TCP_BUF_SIZE 2048
+#endif
+
+#include <lwip/tcp.h>
+typedef enum COMMAND_TYPE_ {
+    COMMAND_ECHO = 0,
+    COMMAND_DISCONNECT = 1,
+    COMMAND_UNDEFINED = 255,
+} COMMAND_TYPE;
+extern const char* COMMAND_TYPE_STRINGS[]; 
+typedef struct TCP_CLIENT_T_{
+    struct tcp_pcb* tcp_pcb;
+    ip_addr_t remote_addr;
+    uint8_t buffer[TCP_BUF_SIZE];
+    int buffer_len;
+    bool connected;
+} TCP_CLIENT_T;
+
+#endif // TCP_TYPEDEFS_H
