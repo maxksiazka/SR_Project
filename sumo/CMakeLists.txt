@@ -1,19 +1,19 @@
 cmake_minimum_required(VERSION 3.13)
-# add_compile_options(-Wall -Wextra)
+add_compile_options(-Wall -Wextra)
 
-# add_compile_options(-pedantic)
+add_compile_options(-pedantic)
 
-# add_compile_options(-Werror=return-type)
+add_compile_options(-Werror=return-type)
 
-# add_compile_options(-Werror=parentheses)
+add_compile_options(-Werror=parentheses)
 
-# add_compile_options(-Werror=vla)
+add_compile_options(-Werror=vla)
 
-# add_compile_options(-Werror=array-bounds)
+add_compile_options(-Werror=array-bounds)
 
 # additional warnings
-# add_compile_options ( -Wcast-qual )
-# add_compile_options ( -Wmaybe-uninitialized )
+add_compile_options ( -Wcast-qual )
+add_compile_options ( -Wmaybe-uninitialized )
 
 
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
@@ -26,7 +26,6 @@ project(sumo C CXX ASM)
 pico_sdk_init()
 
 add_executable(sumo src/main.c
-    src/tcp_typedefs.c
 src/tcp_api_implementation.c
 src/tcp_handling.c
 )
