@@ -1,5 +1,5 @@
-#ifndef TCP_H
-#define TCP_H
+#ifndef TCP_API_IMPLEMENTATION_H
+#define TCP_API_IMPLEMENTATION_H
 
 #ifndef LED_PIN
 #define LED_PIN CYW43_WL_GPIO_LED_PIN
@@ -53,4 +53,4 @@ static void tcp_error_callback(void *arg, err_t err);
 static err_t tcp_connected_callback(void *arg, struct tcp_pcb* client_pcb,err_t err);
 
 
-#endif // TCP_H
+#endif // TCP_API_IMPLEMENTATION_H

@@ -1,4 +1,20 @@
 cmake_minimum_required(VERSION 3.13)
+add_compile_options(-Wall -Wextra)
+
+add_compile_options(-pedantic)
+
+add_compile_options(-Werror=return-type)
+
+add_compile_options(-Werror=parentheses)
+
+add_compile_options(-Werror=vla)
+
+add_compile_options(-Werror=array-bounds)
+
+# additional warnings
+add_compile_options ( -Wcast-qual )
+add_compile_options ( -Wmaybe-uninitialized )
+
 
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 set(PICO_BOARD pico2_w)

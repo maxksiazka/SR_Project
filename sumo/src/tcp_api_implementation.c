@@ -1,4 +1,4 @@
-#include "tcp.h"
+#include "tcp_api_implementation.h"
 
 // TODO: change type to account for different fails
 bool init_wifi_connection(const char *ssid, const char *password) {
