@@ -1,5 +1,6 @@
-#include "tcp_api_implementation.h"
 #include "main.h"
+#include "pico/time.h"
+#include "tcp_api_implementation.h"
 #include <pico/cyw43_arch.h>
 #include <pico/stdlib.h>
 
@@ -16,17 +17,23 @@ bool test_tcp(void) {
         tcp_client_close(tcp_client);
         return false;
     }
+    DEBUG_printf("Wi-Fi connected.\n");
+    DEBUG_printf("Connecting to TCP server at %s:%d...\n", TCP_SERVER_IP,
+                 TCP_SERVER_PORT);
     if (tcp_client_open_connection(tcp_client) == false) {
         DEBUG_printf("Failed to open TCP connection.\n");
         tcp_client_close(tcp_client);
         return false;
     }
-
     DEBUG_printf("Connected to TCP server.\n");
-    while (!tcp_client->connected) {
-        cyw43_arch_gpio_put(LED_PIN, !(cyw43_arch_gpio_get(LED_PIN)));
+    tcp_client->connected = true;
+    cyw43_arch_gpio_put(LED_PIN, 1);
+    while (tcp_client) {
         cyw43_arch_poll();
     }
+    DEBUG_printf("TCP test function completed.\n");
+    free(tcp_client);
+    cyw43_arch_gpio_put(LED_PIN, 0);
     return true;
 }
 
@@ -36,6 +43,10 @@ int main(void) {
 
     test_tcp();
 
+    DEBUG_printf("Execution finished, entering infinite loop.\n");
+    while (true) {
+        sleep_ms(1000);
+    }
     DEBUG_printf("Main function completed.\n");
     return 0;
 }

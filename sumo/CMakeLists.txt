@@ -1,27 +1,12 @@
 cmake_minimum_required(VERSION 3.13)
-add_compile_options(-wall -wextra)
+add_compile_options(-Wall -Wextra)
 
-add_compile_options(-pedantic)
-
-add_compile_options(-werror=return-type)
-
-add_compile_options(-werror=parentheses)
-
-add_compile_options(-werror=vla)
-
-add_compile_options(-werror=array-bounds)
-
-additional warnings
-add_compile_options ( -wcast-qual )
-add_compile_options ( -wmaybe-uninitialized )
-
-
-set(cmake_export_compile_commands on)
-set(pico_board pico2_w)
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+set(PICO_BOARD pico2_w)
 
 include(pico_sdk_import.cmake)
 
-project(sumo c cxx asm)
+project(sumo C CXX ASM)
 
 pico_sdk_init()
 
@@ -31,7 +16,7 @@ src/tcp_api_implementation.c
 src/tcp_handling.c
 )
 
-target_include_directories(sumo public inc)
+target_include_directories(sumo PUBLIC inc)
 
 pico_enable_stdio_usb(sumo 1)
 pico_enable_stdio_uart(sumo 1)

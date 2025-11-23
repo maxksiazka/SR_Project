@@ -1,6 +1,6 @@
 #include "tcp_api_implementation.h"
-#include "tcp_handling.h"
 #include "main.h"
+#include "tcp_handling.h"
 // TODO: change type to account for different fails
 bool init_wifi_connection(const char* ssid, const char* password) {
     if (cyw43_arch_init()) {
@@ -36,6 +36,7 @@ TCP_CLIENT_T* tcp_client_init(void) {
 
 err_t tcp_connected_callback(void* arg, struct tcp_pcb* client_pcb, err_t err) {
     TCP_CLIENT_T* client = (TCP_CLIENT_T*)arg;
+    client->connected = true;
 #warning "implement connected handling"
     return ERR_OK;
 }
@@ -47,10 +48,12 @@ err_t tcp_receive_callback(void* arg, struct tcp_pcb* client_pcb,
         return ERR_VAL;
     }
     if (p == NULL) {
-        // connection closed
-        tcp_client_close(client);
-        return ERR_OK;
+        // connection gracefully closed
+        DEBUG_printf("Connection closed signal received.\n");
+        err_t err_close = tcp_client_close(client);
+        return err_close;
     }
+
     if (p->tot_len > 0) {
         DEBUG_printf("recv %d bytes\n", p->tot_len);
         const uint16_t buffer_remaining = TCP_BUF_SIZE - client->buffer_len;
@@ -71,7 +74,7 @@ err_t tcp_sent_callback(void* arg, struct tcp_pcb* client_pcb,
                         u_int16_t length) {
     DEBUG_printf("In tcp_sent_callback\n");
     TCP_CLIENT_T* client = (TCP_CLIENT_T*)arg;
-    if (client == NULL || client_pcb == NULL){
+    if (client == NULL || client_pcb == NULL) {
         DEBUG_printf("tcp_sent_callback: client or client_pcb is NULL\n");
         return ERR_VAL;
     }
@@ -84,15 +87,21 @@ void tcp_error_callback(void* arg, err_t err) {
     // TODO: implement error handling
     // print the error
     // call tcp_client_close(client);
+    // NOT tcp_close(client) here, as pcb is already gone
+    // special cases:
+    // ERR_RST: connection terminated by remote host
+    // ERR_ABRT: connection aborted
 #warning "implement error handling"
     return;
 }
 
 bool tcp_client_open_connection(TCP_CLIENT_T* client) {
-    DEBUG_printf("Connecting to %s, on port %d\n", TCP_SERVER_IP, TCP_SERVER_PORT);
+    DEBUG_printf("Connecting to %s, on port %d\n", TCP_SERVER_IP,
+                 TCP_SERVER_PORT);
     client->tcp_pcb = tcp_new_ip_type(IP_GET_TYPE(&client->remote_addr));
     if (client->tcp_pcb == NULL) {
-        DEBUG_printf("Failed memory allocation: tcp_client_open_connection()\n");
+        DEBUG_printf(
+            "Failed memory allocation: tcp_client_open_connection()\n");
         return false;
     }
     tcp_arg(client->tcp_pcb, client); // we wanna pass the entire struct
@@ -123,12 +132,14 @@ err_t tcp_client_close(void* arg) {
         tcp_err(client->tcp_pcb, NULL);
         err = tcp_close(client->tcp_pcb);
         if (err != ERR_OK) {
-            DEBUG_printf("tcp_client_close: tcp_close failed with error: %d\n", err);
+            DEBUG_printf("tcp_client_close: tcp_close failed with error: %d\n",
+                         err);
             tcp_abort(client->tcp_pcb);
             err = ERR_ABRT;
         }
         client->tcp_pcb = NULL;
+        DEBUG_printf("TCP client closed");
     }
-    free(client);
+    client->connected = false;
     return err;
 }
