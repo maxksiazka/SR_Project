@@ -1,4 +1,5 @@
 cmake_minimum_required(VERSION 3.13)
+add_compile_options(-Wall -Wextra)
 
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 set(PICO_BOARD pico2_w)
@@ -10,7 +11,9 @@ project(sumo C CXX ASM)
 pico_sdk_init()
 
 add_executable(sumo src/main.c
-src/tcp.c
+    src/tcp_typedefs.c
+src/tcp_api_implementation.c
+src/tcp_handling.c
 )
 
 target_include_directories(sumo PUBLIC inc)
