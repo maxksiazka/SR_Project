@@ -2,8 +2,8 @@
 #define _LWIPOPTS_H
 
 /**
- * @file lwipopts.h
- * @brief Custom lwIP configuration options.
+ * \file lwipopts.h
+ * \brief Custom lwIP configuration options.
  * This file contains settings for tuning the TCP/IP stack behavior. 
  * Sets polling etc.
  */

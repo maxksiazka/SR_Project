@@ -1,7 +1,6 @@
 #ifndef TCP_API_IMPLEMENTATION_H
 #define TCP_API_IMPLEMENTATION_H
 
-
 #include <pico/cyw43_arch.h>
 #include <pico/stdlib.h>
 #include "lwip/pbuf.h"

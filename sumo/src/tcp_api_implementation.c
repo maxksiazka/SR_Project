@@ -1,9 +1,10 @@
 #include "tcp_api_implementation.h"
 #include "tcp_handling.h"
+#include "main.h"
 // TODO: change type to account for different fails
 bool init_wifi_connection(const char* ssid, const char* password) {
     if (cyw43_arch_init()) {
-        printf(
+        DEBUG_printf(
             "Failed to initialize Wi-Fi controller: init_wifi_connection()\n");
         return false;
     }
@@ -12,7 +13,7 @@ bool init_wifi_connection(const char* ssid, const char* password) {
     // 30 seconds to connect
     if (cyw43_arch_wifi_connect_timeout_ms(ssid, password,
                                            CYW43_AUTH_WPA2_AES_PSK, 30000)) {
-        printf("Failed to connect to Wi-Fi: init_wifi_connnection()\n");
+        DEBUG_printf("Failed to connect to Wi-Fi: init_wifi_connnection()\n");
         return false;
     }
     return true;
@@ -21,12 +22,12 @@ bool init_wifi_connection(const char* ssid, const char* password) {
 TCP_CLIENT_T* tcp_client_init(void) {
     TCP_CLIENT_T* client = calloc(1, sizeof(TCP_CLIENT_T));
     if (client == NULL) {
-        printf("Failed memory allocation: tcp_client_init\n");
+        DEBUG_printf("Failed memory allocation: tcp_client_init\n");
         exit(-1); // don't try to recover
     }
     int32_t err = ip4addr_aton(TCP_SERVER_IP, &client->remote_addr);
     if (err == 0) {
-        printf("Invalid IP address format: tcp_client_init()\n");
+        DEBUG_printf("Invalid IP address format: tcp_client_init()\n");
         free(client);
         return NULL;
     }
@@ -40,7 +41,7 @@ err_t tcp_connected_callback(void* arg, struct tcp_pcb* client_pcb, err_t err) {
 }
 err_t tcp_receive_callback(void* arg, struct tcp_pcb* client_pcb,
                            struct pbuf* p, err_t err) {
-    printf("In tcp_receive_callback\n");
+    DEBUG_printf("In tcp_receive_callback\n");
     TCP_CLIENT_T* client = (TCP_CLIENT_T*)arg;
     if (client == NULL) {
         return ERR_VAL;
@@ -51,7 +52,7 @@ err_t tcp_receive_callback(void* arg, struct tcp_pcb* client_pcb,
         return ERR_OK;
     }
     if (p->tot_len > 0) {
-        printf("recv %d bytes\n", p->tot_len);
+        DEBUG_printf("recv %d bytes\n", p->tot_len);
         const uint16_t buffer_remaining = TCP_BUF_SIZE - client->buffer_len;
         client->buffer_len += pbuf_copy_partial(
             p, client->buffer + client->buffer_len, // addition , so we don't
@@ -79,10 +80,10 @@ void tcp_error_callback(void* arg, err_t err) {
 }
 
 bool tcp_client_open_connection(TCP_CLIENT_T* client) {
-    printf("Connecting to %s, on port %d\n", TCP_SERVER_IP, TCP_SERVER_PORT);
+    DEBUG_printf("Connecting to %s, on port %d\n", TCP_SERVER_IP, TCP_SERVER_PORT);
     client->tcp_pcb = tcp_new_ip_type(IP_GET_TYPE(&client->remote_addr));
     if (client->tcp_pcb == NULL) {
-        printf("Failed memory allocation: tcp_client_open_connection()\n");
+        DEBUG_printf("Failed memory allocation: tcp_client_open_connection()\n");
         return false;
     }
     tcp_arg(client->tcp_pcb, client); // we wanna pass the entire struct
@@ -94,7 +95,7 @@ bool tcp_client_open_connection(TCP_CLIENT_T* client) {
     err_t err = tcp_connect(client->tcp_pcb, &client->remote_addr,
                             TCP_SERVER_PORT, tcp_connected_callback);
     if (err != ERR_OK) {
-        printf("tcp_connect failed with error: %d\n", err);
+        DEBUG_printf("tcp_connect failed with error: %d\n", err);
         tcp_client_close(client);
         return false;
     }
@@ -113,7 +114,7 @@ err_t tcp_client_close(void* arg) {
         tcp_err(client->tcp_pcb, NULL);
         err = tcp_close(client->tcp_pcb);
         if (err != ERR_OK) {
-            printf("tcp_client_close: tcp_close failed with error: %d\n", err);
+            DEBUG_printf("tcp_client_close: tcp_close failed with error: %d\n", err);
             tcp_abort(client->tcp_pcb);
             err = ERR_ABRT;
         }
