@@ -36,9 +36,32 @@ TCP_CLIENT_T* tcp_client_init(void) {
 
 err_t tcp_connected_callback(void* arg, struct tcp_pcb* client_pcb, err_t err) {
     TCP_CLIENT_T* client = (TCP_CLIENT_T*)arg;
+    DEBUG_printf("In tcp_connected_callback\n");
+
+    if(client == NULL) {
+        DEBUG_printf("tcp_connected_callback: client is NULL\n");
+        return err;
+    }
     client->connected = true;
-    DEBUG_printf("Connected established with server");
-#warning "implement connected handling"
+    DEBUG_printf("Connected established with server.\n");
+
+    const char* handshake_message = "HANDSHAKE_HELLO";
+    //connection handling
+    err_t err_w = tcp_write(client_pcb, (const uint8_t*)handshake_message, strlen(handshake_message) + 1, TCP_WRITE_FLAG_COPY);
+    
+    if(err_w != ERR_OK) {
+        DEBUG_printf("tcp_write failed with error: %d\n", err_w);
+        return err_w;
+    }
+    
+    err_t err_o = tcp_output(client_pcb);
+
+    if(err_o != ERR_OK) {
+        DEBUG_printf("tcp_output failed with error: %d\n", err_o);
+        return err_o;
+    }
+    //whether implement handshake status in tcp struct??
+
     return ERR_OK;
 }
 err_t tcp_receive_callback(void* arg, struct tcp_pcb* client_pcb,
@@ -84,6 +107,8 @@ err_t tcp_sent_callback(void* arg, struct tcp_pcb* client_pcb,
     return ERR_OK;
 }
 void tcp_error_callback(void* arg, err_t err) {
+    DEBUG_printf("In tcp_error_callback\n");
+
     TCP_CLIENT_T* client = (TCP_CLIENT_T*)arg;
     if(client == NULL) {
         DEBUG_printf("tcp_error_callback: client is NULL\n");
@@ -92,13 +117,13 @@ void tcp_error_callback(void* arg, err_t err) {
 
     switch(err) {
         case ERR_RST:
-            printf("Error occuried. Connection closed by server.\n"); break;
+            DEBUG_printf("Error occuried. Connection closed by server.\n"); break;
         case ERR_ABRT:
-            printf("Error occuried. Connection closed unexpectedly.\n"); break;
+            DEBUG_printf("Error occuried. Connection closed unexpectedly.\n"); break;
         case ERR_TIMEOUT:
-            printf("Error occuried. Connection timed out.\n"); break;;
+            DEBUG_printf("Error occuried. Connection timed out.\n"); break;;
         default:
-            printf("Error %d occuried.\n", err); break;
+            DEBUG_printf("Error %d occuried.\n", err); break;
     }
 
     client->connected = false;
