@@ -1,6 +1,10 @@
 #include "tcp_typedefs.h"
 const char* COMMAND_TYPE_STRINGS[] = {
     [COMMAND_ECHO] = "ECHO",
-    [COMMAND_DISCONNECT] = "DISCONNECT",
+    [COMMAND_STOP] = "STOP",
+    [COMMAND_FORWARD] = "FORWARD",
+    [COMMAND_BACKWARDS] = "BACKWARDS",
+    [COMMAND_LEFT] = "LEFT",
+    [COMMAND_RIGHT] = "RIGHT",
     [COMMAND_UNDEFINED] = "UNDEFINED",
 };
