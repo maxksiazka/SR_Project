@@ -37,6 +37,7 @@ TCP_CLIENT_T* tcp_client_init(void) {
 err_t tcp_connected_callback(void* arg, struct tcp_pcb* client_pcb, err_t err) {
     TCP_CLIENT_T* client = (TCP_CLIENT_T*)arg;
     client->connected = true;
+    DEBUG_printf("Connected established with server");
 #warning "implement connected handling"
     return ERR_OK;
 }
@@ -84,14 +85,24 @@ err_t tcp_sent_callback(void* arg, struct tcp_pcb* client_pcb,
 }
 void tcp_error_callback(void* arg, err_t err) {
     TCP_CLIENT_T* client = (TCP_CLIENT_T*)arg;
-    // TODO: implement error handling
-    // print the error
-    // call tcp_client_close(client);
-    // NOT tcp_close(client) here, as pcb is already gone
-    // special cases:
-    // ERR_RST: connection terminated by remote host
-    // ERR_ABRT: connection aborted
-#warning "implement error handling"
+    if(client == NULL) {
+        DEBUG_printf("tcp_error_callback: client is NULL\n");
+        return ERR_VAL;
+    }
+
+    switch(err) {
+        case ERR_RST:
+            printf("Error occuried. Connection closed by server.\n"); break;
+        case ERR_ABRT:
+            printf("Error occuried. Connection closed unexpectedly.\n"); break;
+        case ERR_TIMEOUT:
+            printf("Error occuried. Connection timed out.\n"); break;;
+        default:
+            printf("Error %d occuried.\n", err); break;
+    }
+
+    client->connected = false;
+    client->buffer_len = 0; //cleaning buffer
     return;
 }
 
