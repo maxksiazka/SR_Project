@@ -36,7 +36,7 @@ typedef struct TCP_CLIENT_T_ {
     struct tcp_pcb* tcp_pcb;
     ip_addr_t remote_addr;
     uint8_t buffer[TCP_BUF_SIZE];
-    int buffer_len;
+    int32_t buffer_len;
     bool connected;
 } TCP_CLIENT_T;
 

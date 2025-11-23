@@ -69,12 +69,21 @@ err_t tcp_receive_callback(void* arg, struct tcp_pcb* client_pcb,
 }
 err_t tcp_sent_callback(void* arg, struct tcp_pcb* client_pcb,
                         u_int16_t length) {
+    DEBUG_printf("In tcp_sent_callback\n");
     TCP_CLIENT_T* client = (TCP_CLIENT_T*)arg;
-#warning "implement sent handling"
+    if (client == NULL || client_pcb == NULL){
+        DEBUG_printf("tcp_sent_callback: client or client_pcb is NULL\n");
+        return ERR_VAL;
+    }
+    DEBUG_printf("Sent %d bytes\n", length);
+    DEBUG_printf("Message sent successfully.\n");
     return ERR_OK;
 }
 void tcp_error_callback(void* arg, err_t err) {
     TCP_CLIENT_T* client = (TCP_CLIENT_T*)arg;
+    // TODO: implement error handling
+    // print the error
+    // call tcp_client_close(client);
 #warning "implement error handling"
     return;
 }

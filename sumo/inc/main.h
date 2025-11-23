@@ -11,7 +11,7 @@
 #define LED_PIN CYW43_WL_GPIO_LED_PIN
 #endif
 
-// #define DEBUG 1 // Uncomment to enable debug prints
+#define DEBUG 1 // Uncomment to enable debug prints
 #ifdef DEBUG
 #define DEBUG_printf(...) printf(__VA_ARGS__)
 #else
