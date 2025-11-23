@@ -36,8 +36,22 @@ TCP_CLIENT_T* tcp_client_init(void) {
 
 err_t tcp_connected_callback(void* arg, struct tcp_pcb* client_pcb, err_t err) {
     TCP_CLIENT_T* client = (TCP_CLIENT_T*)arg;
+    DEBUG_printf("In tcp_connected_callback\n");
+
+    if(client == NULL || client_pcb == NULL) {
+        DEBUG_printf("tcp_connected_callback: client or client_pcb is NULL\n");
+        return err;
+    }
+
+    if(err != ERR_OK) {
+        DEBUG_printf("Error %d occuried.", err);
+        tcp_client_close(client);
+        return err;
+    }
+    
     client->connected = true;
-#warning "implement connected handling"
+    DEBUG_printf("Connected established with server.\n");
+
     return ERR_OK;
 }
 err_t tcp_receive_callback(void* arg, struct tcp_pcb* client_pcb,
@@ -83,15 +97,25 @@ err_t tcp_sent_callback(void* arg, struct tcp_pcb* client_pcb,
     return ERR_OK;
 }
 void tcp_error_callback(void* arg, err_t err) {
+    DEBUG_printf("In tcp_error_callback\n");
+
     TCP_CLIENT_T* client = (TCP_CLIENT_T*)arg;
-    // TODO: implement error handling
-    // print the error
-    // call tcp_client_close(client);
-    // NOT tcp_close(client) here, as pcb is already gone
-    // special cases:
-    // ERR_RST: connection terminated by remote host
-    // ERR_ABRT: connection aborted
-#warning "implement error handling"
+    if(client == NULL) {
+        DEBUG_printf("tcp_error_callback: client is NULL\n");
+        return ERR_VAL;
+    }
+
+    switch(err) {
+        case ERR_RST:
+            DEBUG_printf("Error occuried. Connection to server disappeard.\n"); break;
+        case ERR_ABRT:
+            DEBUG_printf("Error occuried. Connection closed unexpectedly.\n"); break;
+        case ERR_TIMEOUT:
+            DEBUG_printf("Error occuried. Connection timed out.\n"); break;;
+        default:
+            DEBUG_printf("Error %d occuried.\n", err); break;
+    }
+    tcp_client_close(client);
     return;
 }
 

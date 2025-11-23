@@ -3,15 +3,15 @@
 
 // conditional definitions, since might be added in CMakeLists.txt
 #ifndef WIFI_SSID
-#define WIFI_SSID "HALNy-2.4G-001f85"
+#define WIFI_SSID "NetGate4393"
 #endif
 
 #ifndef WIFI_PASSWORD
-#define WIFI_PASSWORD "YtWWH9Lc3c"
+#define WIFI_PASSWORD "29733071"
 #endif
 
 #ifndef TCP_SERVER_IP
-#define TCP_SERVER_IP "192.168.34.11"
+#define TCP_SERVER_IP "192.168.1.107"
 #endif
 
 #ifndef TCP_SERVER_PORT
