@@ -38,29 +38,19 @@ err_t tcp_connected_callback(void* arg, struct tcp_pcb* client_pcb, err_t err) {
     TCP_CLIENT_T* client = (TCP_CLIENT_T*)arg;
     DEBUG_printf("In tcp_connected_callback\n");
 
-    if(client == NULL) {
-        DEBUG_printf("tcp_connected_callback: client is NULL\n");
+    if(client == NULL || client_pcb == NULL) {
+        DEBUG_printf("tcp_connected_callback: client or client_pcb is NULL\n");
         return err;
     }
+
+    if(err != ERR_OK) {
+        DEBUG_printf("Error %d occuried.", err);
+        tcp_client_close(client);
+        return err;
+    }
+    
     client->connected = true;
     DEBUG_printf("Connected established with server.\n");
-
-    const char* handshake_message = "HANDSHAKE_HELLO";
-    //connection handling
-    err_t err_w = tcp_write(client_pcb, (const uint8_t*)handshake_message, strlen(handshake_message) + 1, TCP_WRITE_FLAG_COPY);
-    
-    if(err_w != ERR_OK) {
-        DEBUG_printf("tcp_write failed with error: %d\n", err_w);
-        return err_w;
-    }
-    
-    err_t err_o = tcp_output(client_pcb);
-
-    if(err_o != ERR_OK) {
-        DEBUG_printf("tcp_output failed with error: %d\n", err_o);
-        return err_o;
-    }
-    //whether implement handshake status in tcp struct??
 
     return ERR_OK;
 }
@@ -117,7 +107,7 @@ void tcp_error_callback(void* arg, err_t err) {
 
     switch(err) {
         case ERR_RST:
-            DEBUG_printf("Error occuried. Connection closed by server.\n"); break;
+            DEBUG_printf("Error occuried. Connection to server disappeard.\n"); break;
         case ERR_ABRT:
             DEBUG_printf("Error occuried. Connection closed unexpectedly.\n"); break;
         case ERR_TIMEOUT:
@@ -125,9 +115,7 @@ void tcp_error_callback(void* arg, err_t err) {
         default:
             DEBUG_printf("Error %d occuried.\n", err); break;
     }
-
-    client->connected = false;
-    client->buffer_len = 0; //cleaning buffer
+    tcp_client_close(client);
     return;
 }
 
