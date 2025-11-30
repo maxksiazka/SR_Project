@@ -2,6 +2,7 @@
 #define TCP_HANDLING_H_
 #include "tcp_typedefs.h"
 #include <lwip/tcp.h>
+#include "pwm_motor_control.h"
 
 // mapping enum to string representations
 // https://www.linkedin.com/pulse/mapping-enum-string-c-language-sathishkumar-duraisamy
@@ -20,6 +21,6 @@ err_t tcp_echo_commmand(void* arg, struct tcp_pcb* client_pcb, err_t err);
 
 err_t tcp_handle_message(void* arg, struct tcp_pcb* client_pcb, err_t err);
 
-err_t tcp_command_interpreter(void* arg,struct tcp_pcb* client_pcb, err_t err);
+COMMAND_TYPE tcp_command_interpreter(char *command_str, int32_t len);
 
 #endif // TCP_HANDLING_H_

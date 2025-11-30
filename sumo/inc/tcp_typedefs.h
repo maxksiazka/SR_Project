@@ -24,7 +24,7 @@
 
 #include <lwip/tcp.h>
 
-typedef enum COMMAND_TYPE_ {
+typedef enum {
     COMMAND_ECHO = 0,
     COMMAND_STOP = 1,
     COMMAND_FORWARD = 2,
@@ -36,6 +36,7 @@ typedef enum COMMAND_TYPE_ {
 
 extern const char* COMMAND_TYPE_STRINGS[];
 
+extern bool ECHO_MODE_ENABLED;
 typedef struct TCP_CLIENT_T_ {
     struct tcp_pcb* tcp_pcb;
     ip_addr_t remote_addr;

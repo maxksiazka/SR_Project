@@ -50,6 +50,12 @@ void pwm_set_motor_dir(MOTOR_DIR direction) {
         gpio_put(GPIO_MOTOR_2_PIN1, 0);
         gpio_put(GPIO_MOTOR_2_PIN2, 0);
         break;
+    case MOTOR_DIR_BACKWARD:
+        gpio_put(GPIO_MOTOR_1_PIN1, 0);
+        gpio_put(GPIO_MOTOR_1_PIN2, 1);
+        gpio_put(GPIO_MOTOR_2_PIN1, 0);
+        gpio_put(GPIO_MOTOR_2_PIN2, 1);
+        break;
     default:
         DEBUG_printf("Unsupported motor direction command!\n");
         break;
