@@ -2,18 +2,16 @@
 #define PWM_MOTOR_CONTROL_H
 
 #include "hardware/pwm.h"
-#include "pico/error.h"
 #include "pico/stdlib.h"
 
 #define PWM_MOTOR_1_GPIO 0
 #define PWM_MOTOR_2_GPIO 2
-
 #define GPIO_MOTOR_1_PIN1 11
 #define GPIO_MOTOR_1_PIN2 12
 #define GPIO_MOTOR_2_PIN1 13
 #define GPIO_MOTOR_2_PIN2 14
 
-typedef enum {
+typedef enum MOTOR_DIR_ {
     MOTOR_DIR_STOP = 0,
     MOTOR_DIR_FORWARD = 1,
     MOTOR_DIR_BACKWARD = 2,

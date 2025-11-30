@@ -1,15 +1,14 @@
 #include "pwm_motor_control.h"
 #include "main.h"
-#include <stdio.h>
-
 void pwm_control_init(void) {
+    DEBUG_printf("In pwm control init\n");
     // intialize PWM on GPIO 0 and GPIO 2
     gpio_set_function(PWM_MOTOR_1_GPIO, GPIO_FUNC_PWM);
     gpio_set_function(PWM_MOTOR_2_GPIO, GPIO_FUNC_PWM);
 
-    uint32_t slice_num[2] = {pwm_gpio_to_slice_num(PWM_MOTOR_1_GPIO),
+    uint slice_num[2] = {pwm_gpio_to_slice_num(PWM_MOTOR_1_GPIO),
                              pwm_gpio_to_slice_num(PWM_MOTOR_2_GPIO)};
-    uint32_t channel[2] = {pwm_gpio_to_channel(PWM_MOTOR_1_GPIO),
+    uint channel[2] = {pwm_gpio_to_channel(PWM_MOTOR_1_GPIO),
                            pwm_gpio_to_channel(PWM_MOTOR_2_GPIO)};
 
     pwm_config config[2];
@@ -44,6 +43,7 @@ void pwm_set_motor_dir(MOTOR_DIR direction) {
         gpio_put(GPIO_MOTOR_1_PIN2, 0);
         gpio_put(GPIO_MOTOR_2_PIN1, 1);
         gpio_put(GPIO_MOTOR_2_PIN2, 0);
+        break;
     case MOTOR_DIR_STOP:
         gpio_put(GPIO_MOTOR_1_PIN1, 0);
         gpio_put(GPIO_MOTOR_1_PIN2, 0);
@@ -65,9 +65,9 @@ void pwm_set_motor_speed(uint8_t motor_id, uint8_t speed_percentage) {
         speed_percentage = 100;
     }
 
-    uint32_t slice_num[2] = {pwm_gpio_to_slice_num(PWM_MOTOR_1_GPIO),
+    uint slice_num[2] = {pwm_gpio_to_slice_num(PWM_MOTOR_1_GPIO),
                              pwm_gpio_to_slice_num(PWM_MOTOR_2_GPIO)};
-    uint32_t channel[2] = {pwm_gpio_to_channel(PWM_MOTOR_1_GPIO),
+    uint channel[2] = {pwm_gpio_to_channel(PWM_MOTOR_1_GPIO),
                            pwm_gpio_to_channel(PWM_MOTOR_2_GPIO)};
 
     float duty_cycle_level = (speed_percentage / 100.0f) * 20;

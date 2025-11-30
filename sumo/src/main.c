@@ -1,10 +1,8 @@
 #include "main.h"
-#include "pico/time.h"
 #include "pwm_motor_control.h"
 #include "tcp_api_implementation.h"
 #include <pico/cyw43_arch.h>
 #include <pico/stdlib.h>
-
 bool test_tcp(void) {
     DEBUG_printf("TCP test function called.\n");
     TCP_CLIENT_T* tcp_client = tcp_client_init();
@@ -38,30 +36,37 @@ bool test_tcp(void) {
     return true;
 }
 
-bool test_pwm(void) {
+bool test_pwm_controlling(void) {
+    cyw43_arch_gpio_put(LED_PIN, 1);
+    DEBUG_printf("In test PWM\n");
+    stdio_flush();
     pwm_control_init();
+    DEBUG_printf("INIT DONE\n");
+    stdio_flush();
     pwm_set_motor_dir(MOTOR_DIR_FORWARD);
-    pwm_set_motor_speed(1, 20);
-    pwm_set_motor_speed(2, 20);
+    pwm_set_motor_speed(1, 50);
+    pwm_set_motor_speed(2, 50);
     sleep_ms(5000);
-    pwm_set_motor_speed(1, 0);
-    pwm_set_motor_speed(2, 0);
-    pwm_set_motor_dir(MOTOR_DIR_STOP);
+    // pwm_set_motor_speed(1, 0);
+    // pwm_set_motor_speed(2, 0);
+    // pwm_set_motor_dir(MOTOR_DIR_STOP);
     return true;
 }
 
 int main(void) {
-    // Initialize the Raspberry Pi Pico SDK
     stdio_init_all();
+    if (cyw43_arch_init()) {
+        DEBUG_printf("Wi-Fi init failed");
+        return -1;
+    }
 
-    test_tcp();
+    // test_tcp();
 
-    test_pwm();
-
+    bool jd = test_pwm_controlling();
+    cyw43_arch_gpio_put(LED_PIN, 0);
     DEBUG_printf("Execution finished, entering infinite loop.\n");
     while (true) {
         sleep_ms(1000);
     }
-    DEBUG_printf("Main function completed.\n");
     return 0;
 }
