@@ -102,7 +102,7 @@ void tcp_error_callback(void* arg, err_t err) {
     TCP_CLIENT_T* client = (TCP_CLIENT_T*)arg;
     if(client == NULL) {
         DEBUG_printf("tcp_error_callback: client is NULL\n");
-        return ERR_VAL;
+        return;
     }
 
     switch(err) {
