@@ -15,7 +15,7 @@ Oprogramowanie robota mobilnego znajduje się w podfolderze *sumo/*.
 - Time-of-Flight Sensor: **VL53L0X**
 - Czujnik odbiciowy: **KTIR0711S**
 - Sterownik silników (H-bridge): **TB6612FNG**
-- Silniki: **N20-BT37 micro 210:1**
+- Silniki: **N20-BT37 micro 200:1**
 - Moduł Wi-Fi: zintegrowany z MCU.
 - Zasilanie: **Li-Po 2S**
 
