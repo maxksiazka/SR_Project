@@ -11,6 +11,8 @@
 #define LED_PIN CYW43_WL_GPIO_LED_PIN
 #endif
 
+#include "pico/stdio.h"
+
 #define DEBUG 1 // Uncomment to enable debug prints
 #ifdef DEBUG
 #define DEBUG_printf(...) printf(__VA_ARGS__)

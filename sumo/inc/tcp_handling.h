@@ -20,4 +20,6 @@ err_t tcp_echo_commmand(void* arg, struct tcp_pcb* client_pcb, err_t err);
 
 err_t tcp_handle_message(void* arg, struct tcp_pcb* client_pcb, err_t err);
 
+err_t tcp_command_interpreter(void* arg,struct tcp_pcb* client_pcb, err_t err);
+
 #endif // TCP_HANDLING_H_
