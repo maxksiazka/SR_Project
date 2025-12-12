@@ -34,6 +34,7 @@ bool test_tcp(void) {
     free(tcp_client);
     cyw43_arch_gpio_put(LED_PIN, 0);
     return true;
+    
 }
 
 bool test_pwm_controlling(void) {

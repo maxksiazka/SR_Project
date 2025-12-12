@@ -7,25 +7,30 @@ set(PICO_BOARD pico2_w)
 # set(CMAKE_CXX_FLAGS_DEBUG "-O0 -g")
 include(pico_sdk_import.cmake)
 
-add_subdirectory(lib)
 project(sumo C CXX ASM)
 
 pico_sdk_init()
 
-add_executable(sumo src/main.c
+set(APP_SOURCES
+    src/main.c
     src/tcp_typedefs.c
     src/tcp_api_implementation.c
     src/tcp_handling.c
     src/pwm_motor_control.c
+    lib/VL53L0X_pico_lib/src/tof.c
 )
 
-target_include_directories(sumo PUBLIC inc)
+add_executable(sumo ${APP_SOURCES})
 
-target_link_libraries(sumo 
+target_include_directories(sumo PRIVATE 
+    inc
+    lib/VL53L0X_pico_lib/inc
+)
+
+target_link_libraries(sumo PRIVATE
     pico_cyw43_arch_lwip_poll
     pico_stdlib
     hardware_pwm
-    VL53L0X_pico_lib
 )
 target_compile_definitions(sumo PRIVATE
     WIFI_SSID="$ENV{WIFI_SSID}"

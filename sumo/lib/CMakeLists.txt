@@ -1,1 +1,0 @@
-add_subdirectory(VL53L0X_pico)
