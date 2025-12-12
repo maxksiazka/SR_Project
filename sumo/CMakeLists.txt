@@ -17,6 +17,7 @@ set(APP_SOURCES
     src/tcp_api_implementation.c
     src/tcp_handling.c
     src/pwm_motor_control.c
+    src/adc_line_detector.c
     lib/VL53L0X_pico_lib/src/tof.c
 )
 
@@ -32,6 +33,7 @@ target_link_libraries(sumo PRIVATE
     pico_stdlib
     hardware_pwm
     hardware_i2c
+    hardware_adc
 )
 target_compile_definitions(sumo PRIVATE
     WIFI_SSID="$ENV{WIFI_SSID}"
