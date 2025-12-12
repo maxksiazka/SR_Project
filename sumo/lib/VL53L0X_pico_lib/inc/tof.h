@@ -22,17 +22,17 @@
 // Read the model and revision of the
 // tof sensor
 //
-int tofGetModel(int *model, int *revision);
+int tofGetModel(i2c_inst_t *i2c, uint8_t addr, int *model, int *revision);
 
 //
 // Read the current distance in mm
 //
-int tofReadDistance(void);
+int tofReadDistance(i2c_inst_t *i2c, uint8_t addr);
 
 //
 // Opens a file system handle to the I2C device
 // sets the device continous capture mode
 //
-int tofInit(int iChan, int iAddr, int bLongRange);
+int tofInit(i2c_inst_t *i2c, uint8_t addr, int bLongRange);
 
 #endif // _TOFLIB_H
