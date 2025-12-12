@@ -1,8 +1,10 @@
 #include "main.h"
 #include "pwm_motor_control.h"
 #include "tcp_api_implementation.h"
+#include "adc_line_detector.h"
 #include <pico/cyw43_arch.h>
 #include <pico/stdlib.h>
+
 bool test_tcp(void) {
     DEBUG_printf("TCP test function called.\n");
     TCP_CLIENT_T* tcp_client = tcp_client_init();
@@ -83,8 +85,11 @@ bool test_tcp_with_pwm_control(void) {
     pwm_set_motor_speed(1, 50);
     pwm_set_motor_speed(2, 50);
 
+    adc_line_detector_init();
     while (tcp_client) {
+        line_detector_status_t x = adc_check_line();
         cyw43_arch_poll();
+        sleep_ms(100);
     }
     DEBUG_printf("TCP test function completed.\n");
     free(tcp_client);
