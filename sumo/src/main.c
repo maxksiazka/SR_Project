@@ -78,7 +78,7 @@ bool test_tcp_with_pwm_control(void) {
     cyw43_arch_gpio_put(LED_PIN, 1);
 
     pwm_control_init();
-    pwm_set_motor_dir(MOTOR_DIR_STOP);
+    pwm_set_motor_dir(MOTOR_DIR_FORWARD);
     pwm_set_motor_speed(1, 50);
     pwm_set_motor_speed(2, 50);
 

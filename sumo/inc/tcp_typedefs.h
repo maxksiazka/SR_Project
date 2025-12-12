@@ -2,13 +2,13 @@
 #define TCP_TYPEDEFS_H
 
 // conditional definitions, since might be added in CMakeLists.txt
-#ifndef WIFI_SSID
-#define WIFI_SSID "HALNy-2.4G-001f85"
-#endif
+// #ifndef WIFI_SSID
+// #define WIFI_SSID "HALNy-2.4G-001f85"
+// #endif
 
-#ifndef WIFI_PASSWORD
-#define WIFI_PASSWORD "YtWWH9Lc3c"
-#endif
+// #ifndef WIFI_PASSWORD
+// #define WIFI_PASSWORD "YtWWH9Lc3c"
+// #endif
 
 #ifndef TCP_SERVER_IP
 #define TCP_SERVER_IP "192.168.34.11"
