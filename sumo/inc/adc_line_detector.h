@@ -7,3 +7,4 @@ void adc_init(void);
 uint16_t adc_read(uint8_t channel);
 
 #endif // ADC_LINE_DETECTOR_H
+t_set_a
