@@ -11,6 +11,7 @@ project(sumo C CXX ASM)
 
 pico_sdk_init()
 
+add_subdirectory(lib)
 set(APP_SOURCES
     src/main.c
     src/tcp_typedefs.c
@@ -18,22 +19,20 @@ set(APP_SOURCES
     src/tcp_handling.c
     src/pwm_motor_control.c
     src/adc_line_detector.c
-    lib/VL53L0X_pico_lib/src/tof.c
 )
 
 add_executable(sumo ${APP_SOURCES})
 
 target_include_directories(sumo PRIVATE 
     inc
-    lib/VL53L0X_pico_lib/inc
 )
 
 target_link_libraries(sumo PRIVATE
     pico_cyw43_arch_lwip_poll
     pico_stdlib
     hardware_pwm
-    hardware_i2c
     hardware_adc
+    libVL53L0X_pico
 )
 target_compile_definitions(sumo PRIVATE
     WIFI_SSID="$ENV{WIFI_SSID}"
