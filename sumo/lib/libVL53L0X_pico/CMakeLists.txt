@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.13)
 add_library(libVL53L0X_pico 
-    src/tof.c
+    src/VL53L0X_pico.c
 )
 target_include_directories(libVL53L0X_pico PUBLIC 
     inc

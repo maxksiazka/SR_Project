@@ -1,24 +1,39 @@
-TOF - VL53L0X Time of Flight distance sensor library
+# VL53L0X Library for Raspberry Pi Pico (Pico SDK)
 
-This code is based on the Pololu Arduino library (see LICENSE.txt)
-My aim with this project was to simplify that code and port it to Linux
-for use on boards like the Raspberry Pi. The problem with ST Micro's part
-and support software are that they designed their I2C interface specifically
-to rely on 'magic numbers' for initialization and publish a software library
-which requires adherance to restrictive licensing terms. By publishing this
-library, I hope to help more people use the sensor in more ways. The technology
-and low cost of the sensor make it a valuable addition to the IoT world, but
-ST Micro's attempt to obfuscate the interface and control the software goes
-against the open nature of the community.
+A high-performance C++ static library for the VL53L0X Time-of-Flight (ToF) distance sensor. This version is a specialized port designed specifically for the **Raspberry Pi Pico (RP2040/RP2350)** using the native **Pico SDK**, providing a lean alternative to Arduino-based drivers.
 
-This code puts the sensor into continous sample mode and allows selection
-between the default mode (30-800mm) and the long range mode (30-2000mm).
+## 📜 Lineage & Credits
+This library is the result of a collaborative open-source chain. By using this fork, you benefit from the work of:
+1. **Pololu Corporation**: The original Arduino library structure.
+2. **Larry Bank (bitbank2)**: Simplification and port to Linux systems.
+3. **Daniel Perron (danjperron)**: Basic integration with the Pico SDK.
+4. **Michał Sadecki (sadeckiM), Maksymilian Książka (maxksiazka)**: Ported to the Raspberry Pi Pico SDK, refactored as a static library, and integrated with `hardware_i2c`.
 
-From my limited testing, it appears to give accurate results in the range
-40-600mm. Beyond that and the results are less accurate and more prone to being
-interfered with by ambient light.
+## ⚖️ License
+This project is licensed under the **GNU General Public License v3.0 (GPLv3)**. 
 
-** update 30 March 2023. Daniel perron<br>
-** Fork from https://github.com/bitbank2/VL53L0X<br>
-** modified code to be compatible with the sdk of  Rasberry Pi pico.<br>
-** basically change the I2c  to use hardware instead of device file.<br>
+Because this fork is derived from code licensed under the GPLv3 by Larry Bank, the license remains "reciprocal." You are free to use and modify this code, but any distributions of the software must also be licensed under the GPLv3. 
+
+**Note:** The underlying STMicroelectronics API constants and low-level communication logic remain subject to their original BSD-style notice (see `LICENSE` file for full details).
+
+---
+
+## 🛠 Integration (Pico SDK & CMake)
+
+This library is intended to be used as a **linked static library** in your Pico project.
+
+### 1. Project Structure
+Place this library into your project's library directory:
+```text
+my_project/
+├── lib/
+│   └── libVL53L0X_pico/     <-- This library
+├── CMakeLists.txt
+└── main.c
+```
+### 2. Top level CMakeLists.txt
+Add the following to your top-level `CMakeLists.txt`:
+```cmake
+add_subdirectory(lib)
+target_link_libraries(<EXECUTABLE_NAME> PRIVATE libVL53L0X_pico)
+```
