@@ -12,10 +12,12 @@
 #define DEF_ADDR 0x29
 #define NEW_ADDR 0x2A
 
-extern const int* const XSHUT_PINS;
+extern const int XSHUT_PINS[];
 
 bool i2c_start(void);
 void setup_xshut_pins(void);
 bool tof_set_address(i2c_inst_t *i2c, uint8_t current_addr, uint8_t new_addr);
+void set_i2c_gpio(void);
+bool initSingleTof(i2c_inst_t *i2c, uint8_t addr);
 
 #endif

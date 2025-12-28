@@ -19,6 +19,7 @@ set(APP_SOURCES
     src/pwm_motor_control.c
     src/adc_line_detector.c
     lib/VL53L0X_pico_lib/src/tof.c
+    src/tof_i2c.c
 )
 
 add_executable(sumo ${APP_SOURCES})
