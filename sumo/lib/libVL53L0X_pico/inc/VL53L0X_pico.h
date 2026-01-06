@@ -22,7 +22,7 @@ int tofGetModel(i2c_inst_t *i2c, uint8_t addr, int *model, int *revision);
 //
 // Read the current distance in mm
 //
-int tofReadDistance(i2c_inst_t *i2c, uint8_t addr);
+uint16_t tofReadDistance(i2c_inst_t *i2c, uint8_t addr);
 
 //
 // Opens a file system handle to the I2C device
