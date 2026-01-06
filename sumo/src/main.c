@@ -4,6 +4,7 @@
 #include "adc_line_detector.h"
 #include <pico/cyw43_arch.h>
 #include <pico/stdlib.h>
+#include "tof_i2c.h"
 
 bool test_tcp(void) {
     DEBUG_printf("TCP test function called.\n");
@@ -102,6 +103,11 @@ int main(void) {
     // test_tcp();
     // bool jd = test_pwm_controlling();
     test_tcp_with_pwm_control();
+    if(!i2c_start()) {
+        DEBUG_printf("Sensors execution failed.\n");
+        return 1;
+    }
+
     DEBUG_printf("Execution finished, entering infinite loop.\n");
     while (true) {
         sleep_ms(1000);
