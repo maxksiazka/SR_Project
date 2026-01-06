@@ -12,6 +12,15 @@
 #define DEF_ADDR 0x29
 #define NEW_ADDR 0x2A
 
+#define I2C_LEFT NEW_ADDR
+#define I2C_FRONT_LEFT DEF_ADDR
+
+#define I2C_RIGHT NEW_ADDR
+#define I2C_FRONT_RIGHT DEF_ADDR
+
+#define I2C_PORT_LEFT I2C_PORT_0
+#define I2C_PORT_RIGHT I2C_PORT_1
+
 extern const int XSHUT_PINS[];
 
 bool i2c_start(void);

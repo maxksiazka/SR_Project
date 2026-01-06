@@ -760,7 +760,7 @@ uint16_t readRangeContinuousMillimeters(i2c_inst_t* i2c, uint8_t addr) {
 //
 // Read the current distance in mm
 //
-int tofReadDistance(i2c_inst_t* i2c, uint8_t addr) {
+uint16_t tofReadDistance(i2c_inst_t* i2c, uint8_t addr) {
     int iTimeout;
 
     writeReg(i2c, addr, 0x80, 0x01);

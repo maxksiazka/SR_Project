@@ -20,6 +20,7 @@ set(APP_SOURCES
     src/pwm_motor_control.c
     src/adc_line_detector.c
     src/tof_i2c.c
+    src/control.c
 )
 
 add_executable(sumo ${APP_SOURCES})
