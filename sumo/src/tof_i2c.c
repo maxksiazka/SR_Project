@@ -1,8 +1,8 @@
 #include "tof_i2c.h"
+#include "VL53L0X_pico.h"
 #include "hardware/gpio.h"
-#include "pico/binary_info.h"
-#include "tof.h"
 #include "main.h"
+#include "pico/binary_info.h"
 #include <hardware/i2c.h>
 #include <pico/types.h>
 
@@ -17,7 +17,7 @@ void setup_xshut_pins(void) {
     sleep_ms(100);
 }
 
-bool tof_set_address(i2c_inst_t *i2c, uint8_t current_addr, uint8_t new_addr) {
+bool tof_set_address(i2c_inst_t* i2c, uint8_t current_addr, uint8_t new_addr) {
     uint8_t buffer[2] = {0x8A, new_addr};
 
     int ret = i2c_write_blocking(i2c, current_addr, buffer, 2, false);
@@ -37,19 +37,19 @@ void set_i2c_gpio(void) {
     gpio_pull_up(SCL_PIN_1);
 }
 
-bool initSingleTof(i2c_inst_t *i2c, uint8_t addr) {
+bool initSingleTof(i2c_inst_t* i2c, uint8_t addr) {
     int rev, model;
-    if(tofInit(i2c, addr, 0) != 1) {
-        DEBUG_printf("VL53L0X initialization failed at %u, address 0x%d.\n", i2c_hw_index(i2c), addr);
+    if (tofInit(i2c, addr, 0) != 1) {
+        DEBUG_printf("VL53L0X initialization failed at %u, address 0x%d.\n",
+                     i2c_hw_index(i2c), addr);
         return false;
-    } else {
-        sleep_ms(5);
-        tofGetModel(i2c, addr, &model, &rev);
-        DEBUG_printf("Model ID: %d\n", model);
-        DEBUG_printf("Revision ID: %d\n", rev);
-        DEBUG_printf("VL53L0X initialized on address %d\n", addr);
-        return true;
     }
+    sleep_ms(5);
+    tofGetModel(i2c, addr, &model, &rev);
+    DEBUG_printf("Model ID: %d\n", model);
+    DEBUG_printf("Revision ID: %d\n", rev);
+    DEBUG_printf("VL53L0X initialized on address %d\n", addr);
+    return true;
 }
 
 bool i2c_start(void) {
@@ -74,16 +74,16 @@ bool i2c_start(void) {
     gpio_put(XSHUT_PINS[1], 1);
     sleep_ms(10);
 
-    if(!initSingleTof(I2C_PORT_0, DEF_ADDR))
+    if (!initSingleTof(I2C_PORT_0, DEF_ADDR))
         return false;
 
-    if(!initSingleTof(I2C_PORT_0, NEW_ADDR))
+    if (!initSingleTof(I2C_PORT_0, NEW_ADDR))
         return false;
 
-    if(!initSingleTof(I2C_PORT_1, DEF_ADDR))
+    if (!initSingleTof(I2C_PORT_1, DEF_ADDR))
         return false;
 
-    if(!initSingleTof(I2C_PORT_1, NEW_ADDR))
+    if (!initSingleTof(I2C_PORT_1, NEW_ADDR))
         return false;
 
     return true;
