@@ -28,4 +28,8 @@ void pwm_set_motor_dir(MOTOR_DIR direction);
 
 void pwm_set_motor_speed(uint8_t motor_id, uint8_t speed_percentage);
 
+void pwm_pivot_clockwise(void);
+void pwm_pivot_counterclockwise(void);
+void pwm_turn_clockwise(void);
+void pwm_turn_counterclockwise(void);
 #endif // PWM_MOTOR_CONTROL_H

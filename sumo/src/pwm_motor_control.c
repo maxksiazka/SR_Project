@@ -93,3 +93,29 @@ void pwm_set_motor_speed(uint8_t motor_id, uint8_t speed_percentage) {
     pwm_set_chan_level(slice_num[motor_id - 1], channel[motor_id - 1],
                        (uint16_t)duty_cycle_level);
 }
+void pwm_pivot_clockwise(void) {
+    pwm_set_motor_speed(MOTOR_LEFT, 100);
+    pwm_set_motor_speed(MOTOR_RIGHT, 100);
+    gpio_put(GPIO_MOTOR_1_PIN1, 1);
+    gpio_put(GPIO_MOTOR_1_PIN2, 0);
+    gpio_put(GPIO_MOTOR_2_PIN1, 0);
+    gpio_put(GPIO_MOTOR_2_PIN2, 0);
+}
+void pwm_pivot_counterclockwise(void) {
+    pwm_set_motor_speed(MOTOR_LEFT, 100);
+    pwm_set_motor_speed(MOTOR_RIGHT, 100);
+    gpio_put(GPIO_MOTOR_1_PIN1, 0);
+    gpio_put(GPIO_MOTOR_1_PIN2, 0);
+    gpio_put(GPIO_MOTOR_2_PIN1, 1);
+    gpio_put(GPIO_MOTOR_2_PIN2, 0);
+}
+void pwm_turn_clockwise(void) {
+    pwm_set_motor_speed(MOTOR_LEFT, 100);
+    pwm_set_motor_speed(MOTOR_RIGHT, 100);
+    pwm_set_motor_dir(MOTOR_DIR_RIGHT);
+}
+void pwm_turn_counterclockwise(void) {
+    pwm_set_motor_speed(MOTOR_LEFT, 100);
+    pwm_set_motor_speed(MOTOR_RIGHT, 100);
+    pwm_set_motor_dir(MOTOR_DIR_LEFT);
+}
