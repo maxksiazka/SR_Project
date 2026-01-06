@@ -51,22 +51,44 @@ err_t tcp_handle_message(void* arg, struct tcp_pcb* client_pcb, err_t err) {
     case COMMAND_STOP:
         DEBUG_printf("COMMAND_STOP received\n");
         pwm_set_motor_dir(MOTOR_DIR_STOP);
+        pwm_set_motor_speed(MOTOR_LEFT, 0);
+        pwm_set_motor_speed(MOTOR_RIGHT, 0);
         break;
     case COMMAND_FORWARD:
         DEBUG_printf("COMMAND_FORWARD received\n");
         pwm_set_motor_dir(MOTOR_DIR_FORWARD);
+        pwm_set_motor_speed(MOTOR_LEFT, 100);
+        pwm_set_motor_speed(MOTOR_RIGHT, 100);
         break;
     case COMMAND_BACKWARDS:
         DEBUG_printf("COMMAND_BACKWARDS received\n");
         pwm_set_motor_dir(MOTOR_DIR_BACKWARD);
+        pwm_set_motor_speed(MOTOR_LEFT, 100);
+        pwm_set_motor_speed(MOTOR_RIGHT, 100);
         break;
     case COMMAND_LEFT:
         DEBUG_printf("COMMAND_LEFT received\n");
         pwm_set_motor_dir(MOTOR_DIR_LEFT);
+        pwm_set_motor_speed(MOTOR_LEFT, 100);
+        pwm_set_motor_speed(MOTOR_RIGHT, 100);
         break;
     case COMMAND_RIGHT:
         DEBUG_printf("COMMAND_RIGHT received\n");
         pwm_set_motor_dir(MOTOR_DIR_RIGHT);
+        pwm_set_motor_speed(MOTOR_LEFT, 100);
+        pwm_set_motor_speed(MOTOR_RIGHT, 100);
+        break;
+    case COMMAND_PIVOT_LEFT:
+        DEBUG_printf("COMMAND_PIVOT_LEFT received\n");
+        pwm_set_motor_dir(MOTOR_DIR_FORWARD);
+        pwm_set_motor_speed(MOTOR_LEFT, 0);
+        pwm_set_motor_speed(MOTOR_RIGHT, 100);
+        break;
+    case COMMAND_PIVOT_RIGHT:
+        DEBUG_printf("COMMAND_PIVOT_RIGHT received\n");
+        pwm_set_motor_dir(MOTOR_DIR_FORWARD);
+        pwm_set_motor_speed(MOTOR_LEFT, 100);
+        pwm_set_motor_speed(MOTOR_RIGHT, 0);
         break;
     case COMMAND_UNDEFINED:
         DEBUG_printf("COMMAND_UNDEFINED received\n");

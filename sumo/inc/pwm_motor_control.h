@@ -4,8 +4,11 @@
 #include "hardware/pwm.h"
 #include "pico/stdlib.h"
 
+
 #define PWM_MOTOR_1_GPIO 0
 #define PWM_MOTOR_2_GPIO 2
+#define MOTOR_LEFT PWM_MOTOR_1_GPIO
+#define MOTOR_RIGHT PWM_MOTOR_2_GPIO
 #define GPIO_MOTOR_1_PIN1 11
 #define GPIO_MOTOR_1_PIN2 12
 #define GPIO_MOTOR_2_PIN1 13
@@ -24,4 +27,9 @@ void pwm_control_init(void);
 void pwm_set_motor_dir(MOTOR_DIR direction);
 
 void pwm_set_motor_speed(uint8_t motor_id, uint8_t speed_percentage);
+
+void pwm_pivot_clockwise(void);
+void pwm_pivot_counterclockwise(void);
+void pwm_turn_clockwise(void);
+void pwm_turn_counterclockwise(void);
 #endif // PWM_MOTOR_CONTROL_H
