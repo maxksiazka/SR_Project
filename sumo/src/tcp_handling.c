@@ -68,6 +68,18 @@ err_t tcp_handle_message(void* arg, struct tcp_pcb* client_pcb, err_t err) {
         DEBUG_printf("COMMAND_RIGHT received\n");
         pwm_set_motor_dir(MOTOR_DIR_RIGHT);
         break;
+    case COMMAND_PIVOT_LEFT:
+        DEBUG_printf("COMMAND_PIVOT_LEFT received\n");
+        pwm_set_motor_dir(MOTOR_DIR_FORWARD);
+        pwm_set_motor_speed(MOTOR_LEFT, 0);
+        pwm_set_motor_speed(MOTOR_RIGHT, 100);
+        break;
+    case COMMAND_PIVOT_RIGHT:
+        DEBUG_printf("COMMAND_PIVOT_RIGHT received\n");
+        pwm_set_motor_dir(MOTOR_DIR_FORWARD);
+        pwm_set_motor_speed(MOTOR_LEFT, 100);
+        pwm_set_motor_speed(MOTOR_RIGHT, 0);
+        break;
     case COMMAND_UNDEFINED:
         DEBUG_printf("COMMAND_UNDEFINED received\n");
         break;
