@@ -17,13 +17,8 @@ typedef struct {
     void * next;
 } buffer_t;
 
-enum MODE {ATTACK, AQUISITION};
+enum MODE {SURVIVAL, FIRST_CONTACT ,ATTACK, AQUISITION};
 
-buffer_t * head;
-double mean_left;
-double mean_front_left;
-double mean_front_right;
-double mean_right;
 
 void init_data_struct(void);
 void collect_data(void);
@@ -33,8 +28,9 @@ void collect_data(void);
  */
 void calculate_mean(void);
 uint16_t calculate_real_values(control_data_t data);
+enum MODE designate_strategy(void);
+void begin_acquisition(void);
 bool acquire_target(void);
-void switch_engine_mode(void);
 void predict_alignment(void);
 
 bool fight_mode_enable(void);
