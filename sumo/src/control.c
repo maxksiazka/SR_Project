@@ -5,7 +5,7 @@
 
 void init_data_struct(void) {
     buffer_t buf[4];
-    for(uint8_t i = 0 ; i < 3; ++i) {
+    for (uint8_t i = 0; i < 3; ++i) {
         buf[i].next = &buf[(i + 1) % 3];
     }
     head = &buf[0];
@@ -21,13 +21,15 @@ void collect_data(void) {
 }
 
 void calculate_mean(void) {
-    buffer_t * buf1 = head->next;
-    buffer_t * buf2 = buf1->next;
-    buffer_t * buf3 = buf2 -> next;
+    buffer_t* buf1 = head->next;
+    buffer_t* buf2 = buf1->next;
+    buffer_t* buf3 = buf2->next;
     float alpha = 0.6;
 
     mean_left = tofReadDistance(I2C_PORT_LEFT, I2C_LEFT) * alpha + (1 - alpha) * mean_left;
-    mean_front_left = tofReadDistance(I2C_PORT_LEFT, I2C_FRONT_LEFT) * alpha + (1 - alpha) * mean_front_left;
-    mean_front_right = tofReadDistance(I2C_PORT_RIGHT, I2C_FRONT_RIGHT) * alpha + (1 - alpha) * mean_front_right;
+    mean_front_left =
+        tofReadDistance(I2C_PORT_LEFT, I2C_FRONT_LEFT) * alpha + (1 - alpha) * mean_front_left;
+    mean_front_right =
+        tofReadDistance(I2C_PORT_RIGHT, I2C_FRONT_RIGHT) * alpha + (1 - alpha) * mean_front_right;
     mean_right = tofReadDistance(I2C_PORT_RIGHT, I2C_RIGHT) * alpha + (1 - alpha) * mean_right;
 }
