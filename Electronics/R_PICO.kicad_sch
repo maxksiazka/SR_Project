@@ -3690,6 +3690,16 @@
 	)
 	(wire
 		(pts
+			(xy 100.33 62.23) (xy 100.33 38.1)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "480d25a9-6233-4dce-ac0a-a0e3d7c65c24")
+	)
+	(wire
+		(pts
 			(xy 236.22 148.59) (xy 245.11 148.59)
 		)
 		(stroke
@@ -4120,6 +4130,16 @@
 	)
 	(wire
 		(pts
+			(xy 55.88 38.1) (xy 55.88 66.04)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "a5fb1cb4-cc56-4531-b68b-29c79e7054b0")
+	)
+	(wire
+		(pts
 			(xy 187.96 27.94) (xy 190.5 27.94)
 		)
 		(stroke
@@ -4210,6 +4230,16 @@
 	)
 	(wire
 		(pts
+			(xy 129.54 62.23) (xy 100.33 62.23)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "c8f3f424-b5b1-404d-9635-d6087bd6652f")
+	)
+	(wire
+		(pts
 			(xy 191.77 72.39) (xy 191.77 114.3)
 		)
 		(stroke
@@ -4237,6 +4267,16 @@
 			(type default)
 		)
 		(uuid "cf2f7d77-a389-43fe-a7ef-57151f3b5bc6")
+	)
+	(wire
+		(pts
+			(xy 100.33 38.1) (xy 55.88 38.1)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "d3165e94-ca49-457c-ac63-5cf2276d22b1")
 	)
 	(wire
 		(pts
@@ -4337,6 +4377,16 @@
 			(type default)
 		)
 		(uuid "f8fee641-ed26-4d48-80fa-27ca8f053e66")
+	)
+	(wire
+		(pts
+			(xy 55.88 66.04) (xy 44.45 66.04)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "f922986c-dffa-4257-9469-d5997828d4c5")
 	)
 	(wire
 		(pts
@@ -4691,17 +4741,6 @@
 			(justify left)
 		)
 		(uuid "8a172eec-8049-42b1-ac30-28d60f667a97")
-	)
-	(hierarchical_label "3V3"
-		(shape bidirectional)
-		(at 176.53 77.47 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left)
-		)
-		(uuid "8a345b94-1adc-4dc9-9d19-b188860f9809")
 	)
 	(hierarchical_label "MOT1_OUT"
 		(shape bidirectional)
@@ -5361,6 +5400,72 @@
 	)
 	(symbol
 		(lib_id "power:GND")
+		(at 52.07 55.88 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "2f91a674-6f83-4539-b78d-98617bbcac77")
+		(property "Reference" "#PWR014"
+			(at 52.07 62.23 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Value" "GND"
+			(at 52.07 60.96 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 52.07 55.88 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 52.07 55.88 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
+			(at 52.07 55.88 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "36b589de-1b0a-436a-a028-7431541c071a")
+		)
+		(instances
+			(project "R_PICO"
+				(path "/8d834d26-b607-404e-affc-aead426ecb0a"
+					(reference "#PWR014")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "power:GND")
 		(at 266.7 134.62 0)
 		(unit 1)
 		(exclude_from_sim no)
@@ -5630,6 +5735,72 @@
 			(project ""
 				(path "/8d834d26-b607-404e-affc-aead426ecb0a"
 					(reference "Starter1")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "power:GND")
+		(at 90.17 55.88 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "65071e08-87a6-45ab-b206-7fcf06ec0ec1")
+		(property "Reference" "#PWR013"
+			(at 90.17 62.23 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Value" "GND"
+			(at 90.17 60.96 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 90.17 55.88 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 90.17 55.88 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
+			(at 90.17 55.88 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "65014531-5f13-4653-9fd6-8f224d371e73")
+		)
+		(instances
+			(project "R_PICO"
+				(path "/8d834d26-b607-404e-affc-aead426ecb0a"
+					(reference "#PWR013")
 					(unit 1)
 				)
 			)
