@@ -94,8 +94,8 @@ void predict_alignment() {
 
     else if (distance_diff < 10) {
         // Slightly closer on the left side, turn right
-        pwm_set_motor_speed(MOTOR_LEFT, 70);
-        pwm_set_motor_speed(MOTOR_RIGHT, 90);
+        pwm_set_motor_speed(MOTOR_LEFT, 90);
+        pwm_set_motor_speed(MOTOR_RIGHT, 70);
     } else {
         // pieknie jest, cała naprzód
         pwm_set_motor_speed(MOTOR_LEFT, 100);
