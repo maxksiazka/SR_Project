@@ -34,10 +34,10 @@ Oprogramowanie robota mobilnego znajduje się w podfolderze *sumo/*.
  - [x] Napisanie prostego systemu sterowania: klient TCP -> PWM.
  - [x] Implementacja odbioru danych z TOF - komunikacja I^2^C.
  - [x] Implementacja odbioru danych z czujników odbiciowych - ADC.
- - [ ] Implementacja autonomicznego systemu sterowania
+ - [x] Implementacja autonomicznego systemu sterowania
  - [ ] (Opcjonalnie, ale prawie na pewno) Refactoring kodu.
- - [ ] Finalizacja projektu korpusu.
- - [ ] Finalizacja projektu kół.
+ - [x] Finalizacja projektu korpusu.
+ - [x] Finalizacja projektu kół.
  - [ ] Integracja robota.
  ---
  ---
